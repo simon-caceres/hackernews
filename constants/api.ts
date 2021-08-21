@@ -1,0 +1,1 @@
+export const base: string = 'https://hn.algolia.com/api/'
