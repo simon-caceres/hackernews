@@ -4,18 +4,17 @@ import {
   StyleSheet, 
   FlatList, 
   Dimensions, 
-  SafeAreaView, 
-  StatusBar, 
+  SafeAreaView,
   RefreshControl,
   ActivityIndicator,
 } from 'react-native';
 
 import Services  from '../constants/functions';
-import { Text } from '../components/Themed';
 import NewsDetailItem from '../components/NewsDetail';
+import { HackerNews } from '../types';
 
-export default function HomeScreen() {
-  const [data, setData] = useState([] as any);
+export default function HomeScreen({ navigation }) {
+  const [data, setData] = useState([] as HackerNews[]);
   const [refreshing, setRefresing] = useState(false);
 
   const onDelete = (id: string) => {
@@ -55,13 +54,16 @@ export default function HomeScreen() {
   }, [])
 
   return (
-    <SafeAreaView  style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {
         refreshing ? (
-          <ActivityIndicator color={'#e3e3e3'} size="large" style={{marginTop: 50}} />
+          <ActivityIndicator 
+            color={'#367edb'} 
+            size="large" 
+            style={styles.activityIndicator} 
+          />
         ) : (
           <>
-            <Text style={styles.title}>Hacker News list:</Text>
             <FlatList 
               refreshControl={
                 <RefreshControl 
@@ -69,9 +71,10 @@ export default function HomeScreen() {
                   onRefresh={handleRefresh} 
                 />
               }
+              showsVerticalScrollIndicator={false}
               style={{width: '100%'}} 
               data={data} 
-              renderItem={({ item }) => <NewsDetailItem onDelete={onDelete} item={item} />} 
+              renderItem={({ item }) => <NewsDetailItem navigation={navigation} onDelete={onDelete} item={item} />} 
               keyExtractor={item => String(item.objectID) } 
             />
           </>
@@ -86,12 +89,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 5,
-    marginTop: StatusBar.currentHeight || 0,
     width: Dimensions.get('screen').width - 1,
     backgroundColor: '#eee',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+  activityIndicator: {
+    marginTop: 300,
+    alignSelf: 'center'
+  }
 });

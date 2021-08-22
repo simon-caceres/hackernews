@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FontAwesome } from '@expo/vector-icons';
 import { 
     Animated, 
     StyleSheet, 
@@ -23,10 +24,6 @@ export default function Swipe(props: any) {
     const transX = dragX.interpolate({
         inputRange: [0, RATIO],
         outputRange: [0, 1],
-    });
-    const showLeftAction = dragX.interpolate({
-        inputRange: [-1, 0, 1],
-        outputRange: [0, 0, 1],
     });
     const onGestureEvent = Animated.event(
         [{ nativeEvent: { translationX: dragX } }],
@@ -94,7 +91,19 @@ export default function Swipe(props: any) {
                 <RectButton
                     style={[styles.rowAction, styles.rightAction]}
                     onPress={reset}>
-                    <Text style={styles.actionButtonText}>{message}</Text>
+                    <Text style={styles.actionButtonText}>
+                        {message} {' '}
+                        {
+                            message === 'Delete' && (
+                                <FontAwesome 
+                                    size={20} 
+                                    style={{ marginBottom: -10 }} 
+                                    name={'trash'} 
+                                    color={'white'} 
+                                />
+                            )
+                        }
+                    </Text>
                 </RectButton>
             </Animated.View>
             <PanGestureHandler

@@ -1,10 +1,12 @@
 import React from "react";
-import { View, StyleSheet,Text} from "react-native";
+import { StyleSheet} from "react-native";
 import moment from 'moment';
 
+import { Text, View } from './Themed';
 import Swipe from "./Swipe";
+import { ItemNewsProps } from '../types'
 
-export default function NewsDetailItem (props: any) {
+export default function NewsDetailItem (props: ItemNewsProps) {
     const {
         title, 
         author, 
@@ -13,14 +15,30 @@ export default function NewsDetailItem (props: any) {
         _highlightResult, 
         story_title, 
         objectID,
-        comment_text} = props.item;
-    
-    const {onDelete} = props;
+        story_url,
+    } = props.item;
+
+    let URL: string = url !== null && url !== undefined
+                        ? url 
+                        : story_url !== null && story_url !== undefined
+                            ? story_url 
+                            :  _highlightResult?.story_url?.value
+
+    const {onDelete, navigation} = props;
 
     return (
         <Swipe onDelete={onDelete} id={objectID} >
-            <View style={styles.item}>
-                <Text style={styles.title}>
+            <View  
+                lightColor="#eee" 
+                darkColor="rgba(255,255,255,0.1)" 
+                onTouchEnd={() => navigation.navigate('Modal', {url : URL})} 
+                style={styles.item}
+            >
+                <Text 
+                    lightColor="rgba(0,0,0,0.8)"
+                    darkColor="rgba(255,255,255,0.8)"
+                    style={styles.title}
+                >
                     {
                         story_title !== null 
                             ? story_title 
@@ -29,7 +47,11 @@ export default function NewsDetailItem (props: any) {
                                 : 'Titulo no disponíble'
                     }
                 </Text>
-                <Text style={styles.author}>
+                <Text 
+                    lightColor="rgba(0,0,0,0.8)"
+                    darkColor="rgba(255,255,255,0.8)"
+                    style={styles.author}
+                >
                     By: {' '}{author} | {moment().startOf(created_at).fromNow()} 
                 </Text>
             </View>
