@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createRef } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { 
     Animated, 
@@ -15,7 +15,9 @@ import {
 
 
 export default function Swipe(props: any) {
-    const { children, onDelete, id } = props;
+    const tapRef = createRef();
+    const panRef = createRef();
+    const { children, onDelete } = props;
 
     const RATIO = 3;
     const [message, setMessage] = useState('Delete');
@@ -35,7 +37,7 @@ export default function Swipe(props: any) {
     });
 
 
-    const onHandlerStateChange = event => {
+    const onHandlerStateChange = (event: any) => {
         if (event.nativeEvent.oldState === State.ACTIVE) {
             setMessage('Delete')
             const dragToss = 0.05;
@@ -63,14 +65,14 @@ export default function Swipe(props: any) {
                 useNativeDriver: true,
             }).start(({ finished }) => {
                 if (toValue !== 0 && finished) {
-                    onDelete(id);
+                    onDelete(children.key);
                 }
             });
         }
     };
 
 
-    const onLayout = event => {
+    const onLayout = (event: any) => {
         setWidth(event.nativeEvent.layout.width);
     };
 
@@ -108,6 +110,7 @@ export default function Swipe(props: any) {
             </Animated.View>
             <PanGestureHandler
                 {...props}
+                waitFor={[tapRef, panRef]}
                 activeOffsetX={[-10, 10]}
                 onGestureEvent={onGestureEvent}
                 onHandlerStateChange={onHandlerStateChange}>

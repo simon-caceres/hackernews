@@ -18,6 +18,7 @@ export default function NewsDetailItem (props: ItemNewsProps) {
         story_url,
     } = props.item;
 
+
     let URL: string = url !== null && url !== undefined
                         ? url 
                         : story_url !== null && story_url !== undefined
@@ -27,8 +28,9 @@ export default function NewsDetailItem (props: ItemNewsProps) {
     const {onDelete, navigation} = props;
 
     return (
-        <Swipe onDelete={onDelete} id={objectID} >
-            <View  
+        <Swipe onDelete={onDelete}>
+            <View
+                key={objectID}
                 lightColor="#eee" 
                 darkColor="rgba(255,255,255,0.1)" 
                 onTouchEnd={() => navigation.navigate('Modal', {url : URL})} 
@@ -52,7 +54,7 @@ export default function NewsDetailItem (props: ItemNewsProps) {
                     darkColor="rgba(255,255,255,0.8)"
                     style={styles.author}
                 >
-                    By: {' '}{author} | {moment().startOf(created_at).fromNow()} 
+                    By: {' '}{author} | {moment(created_at).fromNow()} 
                 </Text>
             </View>
         </Swipe>
