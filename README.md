@@ -38,7 +38,7 @@ Or Install Expo Go on CellPhone then run `expo start` and scann de qr code
 
 ## Also See In Expo Host:
 
-- [See: And Scan with your expo go app](exp.host/@simon_cs/hackernews)
+- [See Scan with your expo go app](https://expo.dev/@simon_cs/hackernews)
 
 ## Built With...
 
